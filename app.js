@@ -7,12 +7,18 @@ var bodyParser = require('body-parser');
 var config = require('./config');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/salesmart', function(){
+mongoose.connect('mongodb://localhost/salesmart', function(err){
+    if(err) {
+        console.log(err);
+        return;
+    }
+
     console.log('Connected to MongoDB!');
 });
 
 var routes = require('./routes/index');
 var HobbystRegistrationRoute = require('./routes/HobbiestRegistrationRoute');
+var ProductRegistrationRoute = require('./routes/ProductRegistrationRoute');
 
 var app = express();
 
@@ -28,9 +34,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/', routes);
 app.use('/hregister', HobbystRegistrationRoute);
+app.use('/product', ProductRegistrationRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
