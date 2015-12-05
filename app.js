@@ -10,10 +10,12 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/salesmart', function(err){
     if(err) {
         console.log(err);
+        process.exit(1);
         return;
     }
 
     console.log('Connected to MongoDB!');
+
 });
 
 var routes = require('./routes/index');
