@@ -3,8 +3,9 @@
  */
 function OrderModel(mongoose) {
     var orderSchema = mongoose.Schema({
-        productId: String,
-        merchantId: String,
+        inventoryId: {type: String, index: true},
+        productId: {type: String, index: true},
+        merchantId: {type: String, index: true},
         status: String,
         quantity: Number,
         date: {type: Date, default: new Date()},

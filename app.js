@@ -36,6 +36,7 @@ mongoose.connect(mongoDBConnectionString, function (err) {
 var routes = require('./routes/index');
 var HobbystRegistrationRoute = require('./routes/HobbiestRegistrationRoute');
 var ProductRegistrationRoute = require('./routes/ProductRegistrationRoute');
+var OrderRoute = require('./routes/OrderRoute');
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/hregister', HobbystRegistrationRoute);
 app.use('/product', ProductRegistrationRoute);
+app.use('/order', OrderRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
