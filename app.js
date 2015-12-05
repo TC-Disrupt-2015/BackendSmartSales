@@ -7,8 +7,23 @@ var bodyParser = require('body-parser');
 var config = require('./config');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/salesmart', function(err){
-    if(err) {
+var mongoDBConnectionString = "";
+if(config.db.username) {
+    mongoDBConnectionString = 'mongodb://' +
+        config.db.username + ':' +
+        config.db.password + '@' +
+        config.db.hostname + ':' +
+        config.db.port + '/' +
+        config.db.dbName
+} else {
+    mongoDBConnectionString = 'mongodb://' +
+        config.db.hostname + ':' +
+        config.db.port + '/' +
+        config.db.dbName
+}
+
+mongoose.connect(mongoDBConnectionString, function (err) {
+    if (err) {
         console.log(err);
         process.exit(1);
         return;
