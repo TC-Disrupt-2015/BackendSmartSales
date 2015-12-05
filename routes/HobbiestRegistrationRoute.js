@@ -8,6 +8,15 @@ var Hobbyst = require("../models/HobbyistModel")(mongoose);
 
 // default context root is /hobbyist
 router.post('/register', function(req, res, next) {
+    if(!req.body.name ||
+        !req.body.email ||
+        !req.location ||
+        !req.location.lat ||
+        !req.location.lon ||
+        !req.radius) {
+        return res.status(400).send();
+    }
+
     Hobbyst.findOne({email: req.body.email}, function(err, foundHobbyst) {
         if (err) {
             console.log(err);

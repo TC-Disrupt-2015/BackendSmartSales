@@ -10,6 +10,11 @@ var MerchantModel = require('../models/MerchantModel')(mongoose);
 /* base path is /merchant. */
 router.post('/:merchantId/register', function(req, res, next) {
     var merchantId = req.params.merchantId;
+    if(!merchantId || !req.body.accessToken ||
+        !req.body.location || !req.body.location.lat || !req.body.location.lon) {
+        return res.status(400).send();
+    }
+
     MerchantModel.findOne({merchantId: merchantId}, function(err, foundMerchant) {
         if(err) {
             console.log(err);

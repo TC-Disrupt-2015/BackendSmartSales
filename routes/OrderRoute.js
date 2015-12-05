@@ -9,6 +9,9 @@ var OrderModel = require('../models/OrderModel')(mongoose);
 
 router.get('/merchant/:merchantId', function(req, res) {
     var merchantId = req.params.merchantId;
+    if(!merchantId) {
+        return res.status(400).send();
+    }
     OrderModel.find({merchantId: merchantId}, function(err, orders) {
         if(err) {
             console.log(err);
@@ -25,6 +28,10 @@ router.get('/merchant/:merchantId', function(req, res) {
 
 router.get('/product/:productId', function(req, res) {
     var productId = req.params.productId;
+    if(!productId) {
+        return res.status(400).send();
+    }
+
     OrderModel.find({productId: productId}, function(err, orders) {
         if(err) {
             console.log(err);
@@ -40,6 +47,12 @@ router.get('/product/:productId', function(req, res) {
 });
 
 router.post('/:merchantId/:productId/create', function(req, res) {
+    if(!req.params.merchantId || !req.params.productId ||
+        !req.body.inventoryId || !req.body.status ||
+        !req.body.quantity || !req.body.price ||
+        !req.body.amount || !req.body.description) {
+        return res.status(400).send();
+    }
     var neworder = new OrderModel();
     neworder.inventoryId = req.body.inventoryId;
     neworder.merchantId = req.params.merchantId;
@@ -47,7 +60,7 @@ router.post('/:merchantId/:productId/create', function(req, res) {
     neworder.status = req.body.status;
     neworder.quantity = req.body.quantity;
     neworder.price = req.body.price;
-    neworder.amount = req.body.amount;
+    neworder.amount = neworder.quantity * neworder.price || 0;
     neworder.description = req.body.description;
     neworder.save(function(err, savedOrder) {
         if(err) {
