@@ -3,7 +3,8 @@
  */
 var express = require('express');
 var router = express.Router();
-var Hobbyst = require("../models/HobbyistModel");
+var mongoose = require('mongoose')
+var Hobbyst = require("../models/HobbyistModel")(mongoose);
 
 // default context root is /hregister
 router.post('/', function(req, res, next) {

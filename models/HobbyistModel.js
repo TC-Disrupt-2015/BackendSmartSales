@@ -11,6 +11,6 @@ function HobbyistModel(mongoose)
 		radius: Number
 	});
 
-	return mongoose.model(hobbyistSchema, 'hobbyist', 'hobbyist');
+	return mongoose.model('hobbyist', hobbyistSchema, 'hobbyist');
 }
 module.exports = HobbyistModel;

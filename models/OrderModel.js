@@ -13,7 +13,7 @@ function OrderModel(mongoose) {
         description: String
     });
 
-    return mongoose.model(orderSchema, 'order', 'order');
+    return mongoose.model('order',orderSchema, 'order');
 }
 
 module.exports = OrderModel;

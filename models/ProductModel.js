@@ -9,7 +9,7 @@ function ProductModel(mongoose) {
         cloverId: String
     });
 
-    return mongoose.model(productSchema, 'product', 'product');
+    return mongoose.model('product', productSchema, 'product');
 }
 
 module.exports = ProductModel;

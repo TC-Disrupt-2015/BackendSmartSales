@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var product = require('../models/ProductModel');
+var mongoose = require('mongoose');
+var product = require('../models/ProductModel')(mongoose);
 
 //default context root is /product
 router.post('/register', function(req, res, next) {

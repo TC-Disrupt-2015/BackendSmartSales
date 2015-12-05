@@ -5,7 +5,7 @@ function MerchantModel(mongoose)
 		merchantToken: String
 	});
 
-	return mongoose.model(merchantSchema, 'merchant', 'merchant');
+	return mongoose.model('merchant', merchantSchema, 'merchant');
 }
 
 module.exports = MerchantModel;
