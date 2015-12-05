@@ -7,7 +7,7 @@ var mongoose = require('mongoose')
 var Hobbyst = require("../models/HobbyistModel")(mongoose);
 
 // default context root is /hregister
-router.post('/', function(req, res, next) {
+router.post('/register', function(req, res, next) {
     Hobbyst.findOne({email: req.body.email}, function(err, foundHobbyst) {
         if (err) {
             console.log(err);
