@@ -5,8 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var config = require('./config');
-var passport = require('passport')
-    , FacebookStrategy = require('passport-facebook').Strategy;
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/salesmart', function(){
@@ -15,6 +13,7 @@ mongoose.connect('mongodb://localhost/salesmart', function(){
 
 var routes = require('./routes/index');
 var HobbystRegistrationRoute = require('./routes/HobbiestRegistrationRoute');
+var ProductRegistrationRoute = require('./routes/ProductRegistrationRoute');
 
 var app = express();
 
@@ -30,29 +29,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-passport.use(new FacebookStrategy({
-        clientID: config.oauth.clientId,
-        clientSecret: config.oauth.clientSecret,
-        callbackURL: "/"
-    },
-    function (accessToken, refreshToken, profile, done) {
-        /*User.findOrCreate(..., function (err, user) {
-            if (err) {
-                return done(err);
-            }
-            done(null, user);
-        }
-        )
-        ;*/
-        console.log(accessToken);
-        console.log(refreshToken);
-        console.log(profile);
-        console.log(done);
-    }
-));
-
 app.use('/', routes);
 app.use('/hregister', HobbystRegistrationRoute);
+app.use('/product', ProductRegistrationRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
