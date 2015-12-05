@@ -38,7 +38,7 @@ router.get('/product/:productId', function(req, res) {
         return res.send(orders);
     });
 });
-/* Need sale price */
+
 router.post('/:merchantId/:productId/create', function(req, res) {
     var neworder = new OrderModel();
     neworder.inventoryId = req.body.inventoryId;
