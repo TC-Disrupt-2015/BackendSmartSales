@@ -30,8 +30,12 @@ mongoose.connect(mongoDBConnectionString, function (err) {
     }
 
     console.log('Connected to MongoDB!');
-
 });
+
+var OrderModel = require('../models/OrderModel')(mongoose);
+var Product = require('../models/ProductModel')(mongoose);
+var Merchant = require('../models/MerchantModel')(mongoose);
+var Hobbyist = require('../models/HobbyistModel')(mongoose);
 
 var routes = require('./routes/index');
 var HobbystRegistrationRoute = require('./routes/HobbiestRegistrationRoute');

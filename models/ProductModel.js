@@ -6,7 +6,7 @@ function ProductModel(mongoose) {
         price: Number,
         unitsAvailable: Number,
         tags: [String],
-        cloverId: String
+        hId: String
     });
 
     return mongoose.model('product', productSchema, 'product');
