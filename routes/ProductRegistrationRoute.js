@@ -11,10 +11,10 @@ router.post('/register', function(req, res, next) {
   var newProduct = new Product();
   newProduct.name = req.body.name;
   newProduct.description = req.body.description;
-  // newProduct.photos = req.body.photos,
+  newProduct.photos = [],
   newProduct.unitsAvailable = req.body.unitsAvailable;
   newProduct.tags = req.body.tags.split(',');
-  newProduct.cloverId = req.body.cloverId;
+  newProduct.cloverId = '';
   newProduct.save(function (err, savedProduct) {
   	if(err) {
   		console.log(err);
@@ -29,14 +29,14 @@ router.post('/register', function(req, res, next) {
 });
 
 var uploading = multer({
-  dest: __dirname + '../public/uploads/',
+  dest: __dirname + '/../public/uploads/',
   limits: {fileSize: 1000000, files:1}
 });
 
 // TODO: ensure that the attribute name on the client side is photo
-router.post('/:productId/upload', uploading.single(hat()), function(req, res) {
+router.post('/:productId/upload', uploading.single('photo'), function(req, res) {
   
-  var productId = product.req.params.productId;
+  var productId = req.params.productId;
   Product.findOne({_id: productId}, function(err, foundProduct) {
         if (err) {
           console.log(err);
