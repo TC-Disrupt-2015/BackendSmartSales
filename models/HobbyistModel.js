@@ -7,7 +7,6 @@ function HobbyistModel(mongoose)
 			lat: Number,
 			lon: Number
 		},
-		productsId: [String],
 		radius: Number
 	});
 

@@ -34,7 +34,6 @@ router.post('/register', function(req, res, next) {
             lat: req.body.location.lat,
             lon: req.body.location.lon
         };
-        newHobbyst.productsId = [];
         newHobbyst.radius = req.body.radius;
 
         newHobbyst.save(function (err, savedHobbyst) {
