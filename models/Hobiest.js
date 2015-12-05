@@ -3,8 +3,11 @@ function HobbyistModel(mongoose)
 	var hobbyistSchema = mongoose.Schema({ 
 		name: String,
 		email: String,
-		location: String,
-		productsID: [String],
+		location: {
+			lat: Number,
+			lon: Number
+		},
+		productsId: [String],
 		radius: Number
 	});
 

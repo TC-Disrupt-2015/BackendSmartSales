@@ -8,8 +8,13 @@ var config = require('./config');
 var passport = require('passport')
     , FacebookStrategy = require('passport-facebook').Strategy;
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/salesmart', function(){
+    console.log('Connected to MongoDB!');
+});
+
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var HobbystRegistrationRoute = require('./routes/HobbiestRegistrationRoute');
 
 var app = express();
 
@@ -47,7 +52,7 @@ passport.use(new FacebookStrategy({
 ));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/hregister', HobbystRegistrationRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
