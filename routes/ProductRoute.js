@@ -100,7 +100,7 @@ function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
                     if (foundHobbyists) {
                         var hIds = [];
                         for (var i = 0; i < foundHobbyists.length; i++) {
-                            distance = Math.sqrt(Math.pow((merchantObj.location.lon - foundHobbyists[i].location.lon), 2) + Math.pow((merchantObj.location.lat - foundHobbyists[i].location.lat), 2));
+                            var distance = Math.sqrt(Math.pow((merchantObj.location[0] - foundHobbyists[i].location[0]), 2) + Math.pow((merchantObj.location[1] - foundHobbyists[i].location[1]), 2));
                             if (distance <= foundHobbyists[i].radius) {
                                 hIds.push(foundHobbyists[i]._id);
                             }
