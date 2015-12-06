@@ -132,41 +132,22 @@ function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
     });
 
 
-//get product by product id
-    router.get('/:productId', function (req, res) {
+//get list of products by hobbyist id
+    router.get('/:hId', function (req, res) {
 
-        var productId = req.params.productId;
-        Product.findOne({_id: productId}, function (err, foundProduct) {
+        var hId = req.params.hId;
+        Product.find({hId: hId}, function (err, productList) {
             if (err) {
                 console.log(err);
                 return res.status(500).send();
             }
-
-            if (!foundProduct) {
-                console.log('could not find product');
-                return res.status(404).send();
+            if (productList.length === 0) {
+                return res.send([]);
             }
-
-            if (foundProduct) {
-                var productObj = res.send(foundProduct);
-                productObj.photos.push(req.files.photo.name);
-
-                productObj.save(function (err, savedProduct) {
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send();
-                    }
-
-                    if (savedProduct) {
-                        return res.send(savedProduct);
-                    }
-                    return res.status(500).send();
-                });
-            }
+            return res.send(productList);
         });
     });
     return router;
-    //get list of products by tag
 }
 
 module.exports = ProductRoute;
