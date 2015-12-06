@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 var config = require('./config');
 
 var mongoose = require('mongoose');
@@ -32,16 +33,16 @@ mongoose.connect(mongoDBConnectionString, function (err) {
     console.log('Connected to MongoDB!');
 });
 
-var OrderModel = require('../models/OrderModel')(mongoose);
-var Product = require('../models/ProductModel')(mongoose);
-var Merchant = require('../models/MerchantModel')(mongoose);
-var Hobbyist = require('../models/HobbyistModel')(mongoose);
+var OrderModel = require('./models/OrderModel')(mongoose);
+var ProductModel = require('./models/ProductModel')(mongoose);
+var MerchantModel = require('./models/MerchantModel')(mongoose);
+var HobbyistModel = require('./models/HobbyistModel')(mongoose);
 
 var routes = require('./routes/index');
-var HobbystRegistrationRoute = require('./routes/HobbiestRegistrationRoute');
-var ProductRegistrationRoute = require('./routes/ProductRegistrationRoute');
-var OrderRoute = require('./routes/OrderRoute');
-var MerchantRoute = require('./routes/MerchantRoute');
+var HobbyistRoute = require('./routes/HobbyistRoute')(express, HobbyistModel);
+var ProductRegistrationRoute = require('./routes/ProductRoute')(express, multer, ProductModel, MerchantModel, HobbyistModel);
+var OrderRoute = require('./routes/OrderRoute')(express, OrderModel);
+var MerchantRoute = require('./routes/MerchantRoute')(express, MerchantModel);
 
 var app = express();
 
@@ -58,7 +59,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/hobbyist', HobbystRegistrationRoute);
+app.use('/hobbyist', HobbyistRoute);
 app.use('/product', ProductRegistrationRoute);
 app.use('/order', OrderRoute);
 app.use('/merchant', MerchantRoute);

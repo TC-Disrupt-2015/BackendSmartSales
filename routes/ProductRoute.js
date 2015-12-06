@@ -1,0 +1,172 @@
+function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
+    var router = express.Router();
+    //default context root is /product
+    router.post('/register', function (req, res, next) {
+        if (!req.body.name || !req.body.description || !req.body.unitsAvailable || !req.body.tags) {
+            return res.status(400).send();
+        }
+        var newProduct = new Product();
+        newProduct.name = req.body.name;
+        newProduct.description = req.body.description;
+        newProduct.photos = []
+        newProduct.price = req.body.price;
+        newProduct.unitsAvailable = req.body.unitsAvailable;
+        newProduct.tags = req.body.tags.split(',');
+        newProduct.hId = req.body.hId;
+        newProduct.save(function (err, savedProduct) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+            if (savedProduct) {
+                return res.send(savedProduct);
+            }
+            return res.status(500).send();
+        });
+    });
+
+    var uploading = multer({
+        dest: __dirname + '/../public/uploads/',
+        limits: {fileSize: 1000000, files: 1}
+    });
+
+// TODO: ensure that the attribute name on the client side is photo
+    router.post('/:productId/upload', uploading.single('photo'), function (req, res) {
+
+        var productId = req.params.productId;
+        Product.findOne({_id: productId}, function (err, foundProduct) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if (!foundProduct) {
+                console.log('could not find product');
+                return res.status(404).send();
+            }
+
+            if (foundProduct) {
+                var productObj = foundProduct;
+                productObj.photos.push(req.files.photo.name);
+
+                productObj.save(function (err, savedProduct) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send();
+                    }
+
+                    if (savedProduct) {
+                        return res.send(savedProduct);
+                    }
+                    return res.status(500).send();
+                });
+            }
+        });
+    });
+
+//get list of products near to merchant
+    router.get('/near/merchant/:merchantId', function (req, res) {
+
+        var merchantId = req.params.merchantId;
+
+        Merchant.findOne({merchantId: merchantId}, function (err, foundMerchant) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if (!foundMerchant) {
+                console.log('could not find Merchant');
+                return res.status(404).send();
+            }
+
+            if (foundMerchant) {
+                var merchantObj = foundMerchant;
+
+                Hobbyist.find({
+                    $near: [merchantObj.location.lon, merchantObj.location.lat],
+                    $maxDistance: 25
+                }, function (err, foundHobbyists) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send();
+                    }
+
+                    if (!foundHobbyists) {
+                        console.log('could not find any products');
+                        return res.status(404).send();
+                    }
+
+                    if (foundHobbyists) {
+                        var hIds = [];
+                        for (var i = 0; i < foundHobbyists.length; i++) {
+                            distance = Math.sqrt(Math.pow((merchantObj.location.lon - foundHobbyists[i].location.lon), 2) + Math.pow((merchantObj.location.lat - foundHobbyists[i].location.lat), 2));
+                            if (distance <= foundHobbyists[i].radius) {
+                                hIds.push(foundHobbyists[i]._id);
+                            }
+                        }
+                        if (hIds.length === 0) {
+                            return res.send([]);
+                        }
+
+                        if (hIds.length > 0) {
+                            Product.find({
+                                hId: {
+                                    $in: hIds
+                                }
+                            }, function (err, productList) {
+                                if (err) {
+                                    console.log(err);
+                                    return res.status(500).send();
+                                }
+                                if (productList.length === 0) {
+                                    return res.send([]);
+                                }
+                                return res.send(productList);
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+
+//get product by product id
+    router.get('/:productId', function (req, res) {
+
+        var productId = req.params.productId;
+        Product.findOne({_id: productId}, function (err, foundProduct) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if (!foundProduct) {
+                console.log('could not find product');
+                return res.status(404).send();
+            }
+
+            if (foundProduct) {
+                var productObj = res.send(foundProduct);
+                productObj.photos.push(req.files.photo.name);
+
+                productObj.save(function (err, savedProduct) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send();
+                    }
+
+                    if (savedProduct) {
+                        return res.send(savedProduct);
+                    }
+                    return res.status(500).send();
+                });
+            }
+        });
+    });
+    return router;
+    //get list of products by tag
+}
+
+module.exports = ProductRoute;
