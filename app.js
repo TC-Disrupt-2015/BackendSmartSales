@@ -48,6 +48,7 @@ var HobbyistRoute = require('./routes/HobbyistRoute')(express, HobbyistModel);
 var ProductRegistrationRoute = require('./routes/ProductRoute')(express, uploading, ProductModel, MerchantModel, HobbyistModel);
 var OrderRoute = require('./routes/OrderRoute')(express, OrderModel);
 var MerchantRoute = require('./routes/MerchantRoute')(express, MerchantModel);
+var WebhookRoute = require('./routes/WebhooksRoute')(express);
 
 var app = express();
 
@@ -68,6 +69,7 @@ app.use('/hobbyist', HobbyistRoute);
 app.use('/product', ProductRegistrationRoute);
 app.use('/order', OrderRoute);
 app.use('/merchant', MerchantRoute);
+app.use('/webhook', WebhookRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
