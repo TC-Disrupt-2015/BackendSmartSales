@@ -42,7 +42,7 @@ function ProductRoute(express, uploading, Product, Merchant, Hobbyist) {
 
             if (foundProduct) {
                 var productObj = foundProduct;
-                productObj.photos.push(req.files.photo.name);
+                productObj.photos.push(req.file.filename);
 
                 productObj.save(function (err, savedProduct) {
                     if (err) {

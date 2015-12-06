@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var uploading = multer({
-    dest: __dirname + '/../public/uploads/',
+    dest: __dirname + '/public/uploads/',
     limits: {fileSize: 1000000, files: 1}
 });
 
