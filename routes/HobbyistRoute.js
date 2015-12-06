@@ -5,7 +5,7 @@ function HobbyistRoute(express, HobbyistModel) {
     var router = express.Router();
     // default context root is /hobbyist
     router.post('/register', function (req, res, next) {
-        if (!req.body.name || !req.body.email || !req.location || !req.location.lat || !req.location.lon || !req.radius) {
+        if (!req.body.name || !req.body.email || !req.body.location || !req.body.location.lat || !req.body.location.lon || !req.body.radius) {
             return res.status(400).send();
         }
 
