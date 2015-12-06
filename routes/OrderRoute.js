@@ -68,6 +68,39 @@ function OrderRoute(express, OrderModel) {
         });
     });
 
+    router.put("/:orderId/:status", function(req, res) {
+        var orderId = req.params.orderId;
+        var status = req.params.status;
+        if(!orderId || !status) {
+            return res.status(400).send();
+        }
+
+        OrderModel.findOne({_id: orderId}, function(err, order) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(!order) {
+                return res.status(404).send();
+            }
+
+            order.status = status;
+            order.save(function(err, savedOrder) {
+                if(err) {
+                    console.log(err);
+                    return res.status(500).send();
+                }
+
+                if(!savedOrder) {
+                    return res.status(404).send();
+                }
+
+                return res.send(order);
+            })
+        })
+    });
+
     return router;
 }
 
