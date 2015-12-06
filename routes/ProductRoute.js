@@ -1,4 +1,4 @@
-function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
+function ProductRoute(express, uploading, Product, Merchant, Hobbyist) {
     var router = express.Router();
     //default context root is /product
     router.post('/register', function (req, res, next) {
@@ -23,11 +23,6 @@ function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
             }
             return res.status(500).send();
         });
-    });
-
-    var uploading = multer({
-        dest: __dirname + '/../public/uploads/',
-        limits: {fileSize: 1000000, files: 1}
     });
 
 // TODO: ensure that the attribute name on the client side is photo

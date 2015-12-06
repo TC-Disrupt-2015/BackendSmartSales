@@ -5,6 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var uploading = multer({
+    dest: __dirname + '/../public/uploads/',
+    limits: {fileSize: 1000000, files: 1}
+});
+
 var config = require('./config');
 
 var mongoose = require('mongoose');
@@ -40,7 +45,7 @@ var HobbyistModel = require('./models/HobbyistModel')(mongoose);
 
 var routes = require('./routes/index');
 var HobbyistRoute = require('./routes/HobbyistRoute')(express, HobbyistModel);
-var ProductRegistrationRoute = require('./routes/ProductRoute')(express, multer, ProductModel, MerchantModel, HobbyistModel);
+var ProductRegistrationRoute = require('./routes/ProductRoute')(express, uploading, ProductModel, MerchantModel, HobbyistModel);
 var OrderRoute = require('./routes/OrderRoute')(express, OrderModel);
 var MerchantRoute = require('./routes/MerchantRoute')(express, MerchantModel);
 
@@ -54,7 +59,7 @@ app.set('view engine', 'hbs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
