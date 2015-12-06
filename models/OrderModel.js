@@ -9,8 +9,6 @@ function OrderModel(mongoose) {
         status: String,
         quantity: Number,
         date: {type: Date, default: new Date()},
-        price: Number,
-        amount: Number,
         description: String
     });
 

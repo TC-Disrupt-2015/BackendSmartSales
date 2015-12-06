@@ -53,8 +53,6 @@ function OrderRoute(express, OrderModel) {
         neworder.productId = req.params.productId;
         neworder.status = req.body.status;
         neworder.quantity = req.body.quantity;
-        neworder.price = req.body.price;
-        neworder.amount = neworder.quantity * neworder.price || 0;
         neworder.description = req.body.description;
         neworder.save(function (err, savedOrder) {
             if (err) {
