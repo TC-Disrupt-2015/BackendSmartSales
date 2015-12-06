@@ -8,7 +8,7 @@ function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
         var newProduct = new Product();
         newProduct.name = req.body.name;
         newProduct.description = req.body.description;
-        newProduct.photos = []
+        newProduct.photos = [];
         newProduct.price = req.body.price;
         newProduct.unitsAvailable = req.body.unitsAvailable;
         newProduct.tags = req.body.tags.split(',');
