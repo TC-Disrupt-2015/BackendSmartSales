@@ -43,6 +43,27 @@ function HobbyistRoute(express, HobbyistModel) {
         });
     });
 
+    router.get('/login/:email', function(req, res) {
+        if(!req.params.email) {
+            return res.status(400).send();
+        }
+
+        HobbyistModel.findOne({email: req.params.email}, function(err, foundHobyist) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(foundHobyist) {
+                return res.send(foundHobyist);
+            }
+
+            return res.status(404).send();
+        });
+    })
+
     return router;
 }
+
+
 module.exports = HobbyistRoute;
