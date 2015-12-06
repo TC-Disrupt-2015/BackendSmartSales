@@ -22,10 +22,10 @@ function HobbyistRoute(express, HobbyistModel) {
             var newHobbyst = new HobbyistModel();
             newHobbyst.name = req.body.name;
             newHobbyst.email = req.body.email;
-            newHobbyst.location = {
-                lat: req.body.location.lat,
-                lon: req.body.location.lon
-            };
+            newHobbyst.location = [
+                req.body.location.lon,
+                req.body.location.lat
+            ];
             newHobbyst.radius = req.body.radius;
 
             newHobbyst.save(function (err, savedHobbyst) {

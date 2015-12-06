@@ -83,10 +83,10 @@ function ProductRoute(express, multer, Product, Merchant, Hobbyist) {
             if (foundMerchant) {
                 var merchantObj = foundMerchant;
 
-                Hobbyist.find({
-                    $near: [merchantObj.location.lon, merchantObj.location.lat],
+                Hobbyist.find({location:{
+                    $near: [merchantObj.location[0], merchantObj.location[1]],
                     $maxDistance: 25
-                }, function (err, foundHobbyists) {
+                }}, function (err, foundHobbyists) {
                     if (err) {
                         console.log(err);
                         return res.status(500).send();

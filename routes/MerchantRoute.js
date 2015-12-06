@@ -24,10 +24,10 @@ function MerchantRoute(express, MerchantModel) {
             var newMerchant = new MerchantModel();
             newMerchant.merchantId = merchantId;
             newMerchant.accessToken = req.body.accessToken;
-            newMerchant.location = {
-                lat: req.body.location.lat,
-                lon: req.body.location.lon
-            };
+            newMerchant.location = [
+                req.body.location.lon,
+                req.body.location.lat
+            ];
 
             newMerchant.save(function (err, savedMerchant) {
                 if (err) {
