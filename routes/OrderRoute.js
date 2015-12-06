@@ -101,6 +101,26 @@ function OrderRoute(express, OrderModel) {
         })
     });
 
+    router.get('/:orderId/status', function(req, res) {
+        var orderId = req.params.orderId;
+        if(!orderId) {
+            return res.status(400).send();
+        }
+
+        OrderModel.findOne({_id: orderId}, function(err, order) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(!order) {
+                return res.status(404).send();
+            }
+            
+            return res.send({status: order.status});
+        })
+    });
+
     return router;
 }
 
