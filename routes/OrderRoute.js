@@ -44,7 +44,7 @@ function OrderRoute(express, OrderModel) {
     });
 
     router.post('/:merchantId/:productId/create', function (req, res) {
-        if (!req.params.merchantId || !req.params.productId || !req.body.inventoryId || !req.body.status || !req.body.quantity || !req.body.price || !req.body.amount || !req.body.description) {
+        if (!req.params.merchantId || !req.params.productId || !req.body.inventoryId || !req.body.status || !req.body.quantity || !req.body.description) {
             return res.status(400).send();
         }
         var neworder = new OrderModel();
@@ -116,7 +116,7 @@ function OrderRoute(express, OrderModel) {
             if(!order) {
                 return res.status(404).send();
             }
-            
+
             return res.send({status: order.status});
         })
     });
